@@ -1,0 +1,229 @@
+<head>
+  <!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <meta charset="utf-8"/>
+  <script type="text/javascript" src="http://d3js.org/d3.v4.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>  
+  <div id="myDiv" style:width: 100%></div>
+  <div id="plot" style:width: 100%></div>
+  <div id="tweetbox" style:width: 100%><p></p></div>
+  <script>
+
+
+    d3.csv("PlutchikClassifyObama.csv", function(error, data) {
+
+        if (error) throw error;
+
+
+
+    var dt = [];
+    var donlydate = [];
+    var danger =[];
+    var danticipation = [];
+    var ddisgust = [];
+    var dfear = [];
+    var djoy = [];
+    var dsadness =[];
+    var dsurprise =[];
+    var dtrust =[];
+    var dtweets =[];
+
+
+
+    for (var i = 0; i<data.length; i++){
+        dt[i] = data[i].Date;
+        danger[i] = data[i].Anger;
+        danticipation[i] = data[i].Anticipation;
+        ddisgust[i] = data[i].Disgust;
+        dfear[i] = data[i].Fear;
+        djoy[i] = data[i].Joy;
+        dsadness[i] = data[i].Sadness;
+        dsurprise[i] = data[i].Surprise;
+        dtrust[i] = data[i].Trust;
+        dtweets[i] = data[i].Tweet;
+        // donlydate[i] = dt[i].substr(0,dt[i].indexOf(' '));
+
+    }
+
+
+    
+   
+
+    //console.log(dtweets);
+    //console.log(dtweets);
+
+
+              var dictAnger = {
+                width: 0.5,
+                color: '#e74c3c'
+              };
+
+
+              var dictAnticipation = {
+                width: 0.5,
+                color: '#f7933b'
+              };
+
+              var dictDisgust = {
+                width: 0.5,
+                color: '#9b59b6'
+              };
+
+              var dictFear = {
+                width: 0.5,
+                color: '#2ecc71'
+              };
+
+              var dictJoy = {
+                width: 0.5,
+                color: '#f9ed00'
+              };
+
+              var dictSadness = {
+                width: 0.5,
+                color: '#7176dd'
+              };
+
+              var dictSurprise = {
+                width: 0.5,
+                color: '#00aef9'
+              };
+
+              var dictTrust = {
+                width: 0.5,
+                color: '#c4ed0f'
+              };
+
+    var myPlot = document.getElementById('myDiv');
+        
+
+        var trace1 = {
+          x: dt,
+          y: danger,
+          hoverinfo: 'y',
+          mode: 'lines',
+          line: dictAnger,
+          stackgroup: 'one'
+        };
+
+   
+        var trace2 = {
+          x: dt,
+          y: danticipation,
+          hoverinfo: 'y',
+          mode: 'lines',
+          line: dictAnticipation,
+          stackgroup: 'one'
+        };
+
+        var trace3 = {
+          x: dt,
+          y: ddisgust,
+          hoverinfo: 'y',
+          mode: 'lines',
+          line: dictDisgust,
+          stackgroup: 'one'
+        };
+
+        var trace4 = {
+          x: dt,
+          y: dfear,
+          hoverinfo: 'y',
+          mode: 'lines',
+          line: dictFear,
+          stackgroup: 'one'
+        };
+
+        var trace5 = {
+          x: dt,
+          y: djoy,
+          hoverinfo: 'y',
+          mode: 'lines',
+          line: dictJoy,
+          stackgroup: 'one'
+        };
+
+        var trace6 = {
+          x: dt,
+          y: dsadness,
+          hoverinfo: 'y',
+          mode: 'lines',
+          line: dictSadness,
+          stackgroup: 'one'
+        };
+
+        var trace7 = {
+          x: dt,
+          y: dsurprise,
+          hoverinfo: 'y',
+          mode: 'lines',
+          line: dictSurprise,
+          stackgroup: 'one'
+        };
+
+        var trace8 = {
+          x: dt,
+          y: dtrust,
+          hoverinfo: 'y',
+          mode: 'lines',
+          line: dictTrust,
+          stackgroup: 'one'
+        };
+
+       
+
+    var layout = {
+            title: '1st graph'
+      };
+
+    var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7, trace8];
+
+    Plotly.newPlot('myDiv', data, layout);
+
+
+
+
+          myPlot.on('plotly_click', function(data){
+
+            console.log(dt);
+            console.log(data.points[0].x);
+
+            // var result = dt.includes(data.points[0].x);
+            // console.log(result);
+
+            function getAllIndexes(arr, val) {
+                var indexes = [], i;
+                for(i = 0; i < arr.length; i++)
+                    if (arr[i] === val)
+                        indexes.push(i);
+                return indexes;
+            }
+
+            var result = getAllIndexes(donlydate, data.points[0].x.substr(0,data.points[0].x.indexOf(' ')));
+            console.log(data.points[0].x.substr(0,data.points[0].x.indexOf(' ')));
+            console.log("result is lenght:"+result.length);
+
+            var daytweets = [];
+            for (var i =0; i<result.length; i++){
+              daytweets[i] = dtweets[result[i]];
+              // console.log(dtweets[result[i]]);
+          }
+          document.getElementById('tweetbox').innerHTML=daytweets;
+         // console.log(daytweets);
+
+          //   var traces = [
+          //   {x: [1,2,3], y: [2,1,4], stackgroup: 'one'},
+          //   {x: [1,2,3], y: [1,1,2], stackgroup: 'one'},
+          //   {x: [1,2,3], y: [3,0,2], stackgroup: 'one'}
+          // ];
+
+          // Plotly.newPlot('plot', traces, {title: 'stacked and filled line chart'});
+          });
+
+          });
+  </script>
+</body>

@@ -1,0 +1,2 @@
+'Id','Tweet','Emotion','Anger','Joy','Surprise','Fear','Disgust','Sadness','Trust','Anticipation'
+id,username,date,tweet,sentimentvalue,category,emotion,anger,joy,surprise,fear,disgust,sadness,trust,anticipation
